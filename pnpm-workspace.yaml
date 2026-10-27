@@ -1,0 +1,23 @@
+# Standalone dependency policy; keep overrides aligned with pnpm-lock.yaml.
+packages:
+  - .
+minimumReleaseAge: 10080
+minimumReleaseAgeIgnoreMissingTime: false
+trustLockfile: false
+strictDepBuilds: true
+allowBuilds:
+  esbuild: true
+  fsevents: true
+  sharp: true
+  unrs-resolver: true
+  workerd: true
+overrides:
+  "@babel/core": ^7.29.6
+  browserslist: ^4.28.7
+  baseline-browser-mapping: ^2.11.0
+  fast-uri: ^3.1.9
+  source-map-js: ^1.2.2
+  sharp: 0.35.5
+# Exact security-patch exception retained from the tested dependency policy.
+minimumReleaseAgeExclude:
+  - fast-uri@3.1.9
