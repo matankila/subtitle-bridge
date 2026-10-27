@@ -1,0 +1,1 @@
+ALTER TABLE `jobs` ADD `user_ip` text;
