@@ -1,0 +1,10 @@
+'use client';
+import {useState} from 'react';
+import {clientApi} from '../lib/client.mjs';
+export type Release={id:string;label:string;kind:string;language:string};
+export default function ReleasePicker({mediaId,type,config,filename='',value='',disabled=false,onChange}:{mediaId:string;type:string;config:string;filename?:string;value?:string;disabled?:boolean;onChange:(id:string,label:string)=>void}){
+ const [options,setOptions]=useState<Release[]>([]),[loaded,setLoaded]=useState(''),[loading,setLoading]=useState(false),[error,setError]=useState('');
+ const identity=JSON.stringify([mediaId,type,config,filename]);
+ async function load(){setLoading(true);setError('');try{const result=await clientApi('/api/releases',{key:config,type,id:mediaId,filename});setOptions(result.options);setLoaded(identity);if(value&&!result.options.some((x:Release)=>x.id===value))onChange('','');}catch(e){setError((e as Error).message);}finally{setLoading(false);}}
+ return <div className="release-picker"><button type="button" className="text-button" disabled={disabled||loading||!mediaId} onClick={load}>{loading?'Loading releases…':loaded===identity?'Refresh available releases':'Choose subtitle release (optional)'}</button><button type="button" className="text-button" disabled={disabled||loading||!mediaId} onClick={()=>{onChange('','');setError('');}}>Use automatic matching</button><p className="field-help">Release selection is optional. Continue without loading this list, even if it is short or unavailable.</p>{loaded===identity&&<><label>Subtitle release<select aria-label={`Subtitle release for ${mediaId}`} value={value} disabled={disabled||loading} onChange={e=>{const choice=options.find(x=>x.id===e.target.value);onChange(choice?.id||'',choice?.label||'');}}><option value="">Automatic best available match</option>{options.map(x=><option key={x.id} value={x.id}>{x.kind==='existing'?'Available':'Translate English'} · {x.label}</option>)}</select></label>{!options.length&&<p className="field-help">No existing target-language subtitle or English source was found.</p>}</>}{error&&<p role="alert" className="episode-error">{error}</p>}</div>;
+}
