@@ -1,0 +1,9 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "subtitle-bridge",
+  "main": "worker/index.ts",
+  "compatibility_date": "2026-05-15",
+  "compatibility_flags": ["nodejs_compat"],
+  "d1_databases": [{"binding":"DB","database_name":"subtitle-bridge","database_id":"00000000-0000-4000-8000-000000000000","migrations_dir":"drizzle"}],
+  "vars": {"REQUEST_HISTORY_OWNER_EMAIL":"owner@localhost","GOOGLE_TRANSLATE_ENABLED":"true","GEMINI_REFINEMENT_ENABLED":"false","TRANSLATION_MONTHLY_CHAR_LIMIT":"5000000"}
+}
